@@ -1,0 +1,75 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#define N 7
+#define M 7
+#define C 5
+
+void matrixFill(int A[N][M])
+{
+	for(int i = 0; i < N; i++)
+	{
+		for(int j = 0; j < M; j++)
+		{
+			A[i][j] = 1;
+		}
+	}
+	for(int i = 1; i < N-1; i++)
+	{
+		for(int j = 1; j < M -1; j++)
+		{
+			A[i][j] = rand()%2?0:rand()%2;
+		}
+	}
+}
+
+void printMatrix(int A[N][M])
+{
+	for(int i = 0; i < N; i++)
+	{
+		for(int j = 0; j < M; j++)
+		{
+			printf("%d ",A[i][j]);
+		}
+		printf("\n");
+	}
+}
+
+void refill(int A[N][M],int startPosition, int x, int y)
+{
+    if(A[x][y+1]==startPosition && y < M-1)
+    {
+        refill(A,startPosition,x,y+1);
+        return A[x][y] = C;
+    }
+    else if(A[x+1][y]==startPosition && x < N-1)
+    {
+        refill(A,startPosition,x+1,y);
+        return A[x][y] = C;
+    }
+    else if(A[x-1][y]==startPosition && x > 1)
+    {
+        refill(A,startPosition,x-1,y);
+        return A[x][y] = C;
+    }
+    else if(A[x][y-1]==startPosition && y > 1)
+    {
+        refill(A,startPosition,x,y-1);
+        return A[x][y] = C;
+    }
+}
+
+int main(int argc, char const *argv[])
+{
+	srand(time(0));
+	printf("Start\n");
+	int A[N][M];
+	int sx,sy;
+	scanf("%d %d", &sx, &sy);
+	matrixFill(A);
+	printMatrix(A);
+    refill(A,A[sx][sy],sx,sy);
+	printMatrix(A);
+    printf("END\n");
+	return 0;
+}
