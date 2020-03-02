@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#define N 7
-#define M 7
+#define N 250
+#define M 250
 #define C 5
 
 void matrixFill(int A[N][M])
@@ -37,25 +37,17 @@ void printMatrix(int A[N][M])
 
 void refill(int A[N][M],int startPosition, int x, int y)
 {
-    if(A[x][y+1]==startPosition && y < M-1)
+    if(A[x][y]==startPosition && y > 0 && x > 0 && x < N && y < M)
     {
+        A[x][y] = C;
         refill(A,startPosition,x,y+1);
-        return A[x][y] = C;
-    }
-    else if(A[x+1][y]==startPosition && x < N-1)
-    {
-        refill(A,startPosition,x+1,y);
-        return A[x][y] = C;
-    }
-    else if(A[x-1][y]==startPosition && x > 1)
-    {
-        refill(A,startPosition,x-1,y);
-        return A[x][y] = C;
-    }
-    else if(A[x][y-1]==startPosition && y > 1)
-    {
+        A[x][y] = C;
         refill(A,startPosition,x,y-1);
-        return A[x][y] = C;
+        A[x][y] = C;
+        refill(A,startPosition,x+1,y);
+        A[x][y] = C;
+        refill(A,startPosition,x-1,y);
+
     }
 }
 
@@ -65,11 +57,11 @@ int main(int argc, char const *argv[])
 	printf("Start\n");
 	int A[N][M];
 	int sx,sy;
-	scanf("%d %d", &sx, &sy);
 	matrixFill(A);
 	printMatrix(A);
-    refill(A,A[sx][sy],sx,sy);
+    	scanf("%d %d", &sx, &sy);
+    	refill(A,A[sx][sy],sx,sy);
 	printMatrix(A);
-    printf("END\n");
+   	printf("END\n");
 	return 0;
 }
