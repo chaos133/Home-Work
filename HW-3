@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
+
+void printMatrix(int** A, int x, int y)
+{
+    int sum=0;
+	for(int i = 0; i < x; i++)
+        {
+            for(int j = 0;j<y;j++)
+            {
+                if(j==y-1)
+                {
+                    A[i][j] = sum;
+                }
+                printf("%d ",A[i][j]);
+                sum+=A[i][j];
+            }
+            sum = 0;
+            printf("\n");
+        }
+}
+
+void sortMatrix(int** A, int x, int y)
+{
+    int t;
+    for(int i = 0; i < y; i++)
+        {
+            for(int j = 0;j < x;j++)
+            {
+                for(int k = 0;k < x;k++)
+                {
+                    if(A[j][i]>A[k][i])
+                    {
+                        t = A[j][i];
+                        A[j][i] = A[k][i];
+                        A[k][i] = t;
+                    }
+                }
+            }
+        }
+}
+
+void main()
+{
+    srand(time(0));
+    int x ,y,c = 4;
+    scanf("%d %d",&x,&y);
+    int **array = (int **) malloc((x) * sizeof(int *));
+    for(int i = 0;i<x;i++) array[i] = (int *)malloc((y+1) * sizeof(int));
+    for(int i = 0; i < x;i++) for(int j = 0;j<y;j++) array[i][j] = rand()%20;
+    printMatrix(array,x,y+1);
+    sortMatrix(array,x,y);
+    printf("\n");
+    printMatrix(array,x,y+1);
+    getchar();
+}
