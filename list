@@ -1,0 +1,154 @@
+#include <iostream>
+#include <vector>
+
+using std::cout;
+using std::endl;
+
+namespace mycontainers
+{
+	template <class T>
+	struct Node
+	{
+		T data;			// информация в узле
+		Node* next; // указатель на следующий объект списка
+
+		Node(T data) // конструктор
+		{
+			this->data = data;
+			this->next = nullptr;
+		}
+	};
+
+	template <class T>
+	class MyLinkedList
+	{
+	private:
+		Node<T> * head;  // указатель на начало списка
+		size_t Count;    // размер списка
+	public:
+		MyLinkedList(); // конструктор
+		~MyLinkedList();
+		void push_back(T x);
+		void pop_back();
+		void push_front(T x);
+		void pop_front();
+		void show() const;
+		size_t size() const; // вернет размер списка
+		bool empty() const; // отвечает на впорос пустой ли список
+	};
+
+	template <class T>
+	MyLinkedList<T>::MyLinkedList()
+	{
+		cout << "I am MyLinkedList constructor" << endl;
+		head = nullptr;
+		Count = 0;
+	}
+	template <class T>
+	void MyLinkedList<T>::push_back(T x)
+	{
+		if(Count == 0)
+			head = new Node<T>(x);
+		else
+		{
+			Node<T>* current = head;
+			while(current->next != nullptr)
+				current = current->next;
+			current->next = new Node<T>(x);
+		}
+		++Count;
+	}
+	template <class T>
+	void MyLinkedList<T>::show() const
+	{
+		if(Count > 0)
+		{
+			Node<T>* current = head;
+			while(current != nullptr)
+			{
+				cout << current->data << " -> ";
+				current = current->next;
+			}
+			cout << "nullptr" << endl;
+		}
+	}
+	template <class T>
+	void MyLinkedList<T>::push_front(T x)
+	{
+		if(Count == 0)
+			head = new Node<T>(x);
+		else
+		{
+			Node<T>* newobj = new Node<T>(x);
+			newobj->next = head;
+			head = newobj;
+		}
+		++Count;
+	}
+	template <class T>
+	void MyLinkedList<T>::pop_front()
+	{
+        Node<T>* tmp = head;
+        delete tmp;
+        --Count;
+	}
+	template <class T>
+	void MyLinkedList<T>::pop_back()
+	{
+        Node<T>* current = head;
+			while(current != nullptr)
+				current = current->next;
+        delete current;
+	    --Count;
+	}
+	template <class T>
+	MyLinkedList<T>::~MyLinkedList()
+	{
+		if(Count != 0)
+		{
+			cout << "I am MyLinkedList destructor" << endl;
+			Node<T>* tmp;
+			while(head != nullptr)
+			{
+				tmp = head;
+				head = head->next;
+				delete tmp;
+			}
+		}
+	}
+	template <class T>
+  size_t MyLinkedList<T>::size() const
+  {
+    return Count;
+  }
+	template <class T>
+  bool MyLinkedList<T>::empty() const
+  {
+    return Count == 0;
+    // if(Count == 0)
+		// 	return true;
+    // else
+		// 	return false;
+  }
+}
+
+int main()
+{
+	mycontainers::MyLinkedList<int> lst;
+	lst.push_back(1);
+	lst.push_back(2);
+	lst.push_back(3);
+	lst.push_back(4);
+	lst.show();
+	lst.push_front(0);
+	lst.show();
+	lst.pop_front();
+	lst.show();
+	lst.pop_back();
+  lst.show();
+
+	cout << lst.size() << endl;
+	cout << lst.empty() << endl;
+
+	
+}
